@@ -1,0 +1,8 @@
+.setting-menu {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  height: 30px;
+  width: 30px;
+  cursor: pointer;
+}
