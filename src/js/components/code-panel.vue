@@ -14,7 +14,9 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      xx: 'xx'
+    }
   },
   mounted() {
     this.editor = CodeMirror.fromTextArea(this.$refs.textarea, {
@@ -24,6 +26,11 @@ export default {
       value: this.value
     });
     this.editor.on('change', this.handleChange)
+  },
+  beforeDestroy() {
+    this.editor && this.editor.toTextArea()
+  },
+  destroyed() {
   },
   watch: {
     value(v) {

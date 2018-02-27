@@ -10,6 +10,7 @@
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-component": "^1.1.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "clean-webpack-plugin": "^0.1.17",
     "copy-webpack-plugin": "^4.2.0",
     "css-loader": "^0.25.0",
@@ -28,6 +29,7 @@
     "codemirror": "^5.35.0",
     "element-ui": "^2.2.0",
     "monaco-editor": "^0.10.1",
+    "thin-promise": "^1.0.0",
     "vue": "^2.5.13"
   }
 }

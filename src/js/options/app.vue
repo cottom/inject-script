@@ -1,37 +1,44 @@
 <template>
   <section>
     <header></header>
-    <div class="filter">
-      <el-select v-model="filterValue"></el-select>
+    <div class="filter" filterable>
+      <el-select placeholder="searchByType" v-model="filterValue">
+      </el-select>
       <el-button @click="addNew" type="primary">add</el-button>
     </div>
     <div v-if="newScript">
-      <code-panel v-model="newScript.script"/>
+      <editor-item :config="newScript" />
     </div>
   </section>
 </template>
 <script>
 import Vue from 'vue'
 import { Button, Select } from 'element-ui'
-import CodePanel from '../components/code-panel.vue'
+import EditorItem from '../components/editor-item.vue'
+
+// import bus from '../bus'
+
+import { saveScript, updateScript, deleteScript, getAllScript, getScriptById } from '../curd'
+
 Vue.use(Button)
 Vue.use(Select)
 export default {
   data() {
     return {
+      // bus,
       filterValue: '',
       newScript: null
     }
   },
   components: {
-    CodePanel
+    EditorItem
   },
   methods: {
     addNew() {
       this.newScript = {
         name: '',
-        tag: null,
-        script: ''
+        type: null,
+        code: ''
       }
     }
   }
