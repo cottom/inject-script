@@ -11,20 +11,22 @@ export default {
     lang: {
       type: String,
       default: 'javascript'
-    }
+    },
+    disabled: Boolean
   },
   data() {
-    return {
-      xx: 'xx'
-    }
+    return {}
   },
   mounted() {
+    const readyOnly = this.disabled ? true : false
     this.editor = CodeMirror.fromTextArea(this.$refs.textarea, {
+      viewportMargin: Infinity,
       lineNumbers: true,
       theme: 'icecoder',
       mode: 'javascript',
-      value: this.value
-    });
+      value: this.value,
+      readyOnly
+    })
     this.editor.on('change', this.handleChange)
   },
   beforeDestroy() {
@@ -33,13 +35,16 @@ export default {
   destroyed() {
   },
   watch: {
-    value(v) {
+    value(val) {
       val !== this.editor.getValue() && this.editor.setValue(val)
+    },
+    disabled(v) {
+      this.editor.steOption('readyOnly', v)
     }
   },
   methods: {
     handleChange() {
-      this.$emit('change', this.editor.getValue())
+      this.$emit('input', this.editor.getValue())
     }
   }
 }
@@ -48,6 +53,11 @@ export default {
 <style>
 .container {
   font-size: 14px;
+}
+.container .CodeMirror {
+  border: 1px solid #eee;
+  height: auto;
+  min-height: 200px;
 }
 </style>
 

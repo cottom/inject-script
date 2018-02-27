@@ -68,6 +68,8 @@ export const getAllScript = () => {
   })
 }
 
+export const getAllTypes = () => getAllScript().then(scripts => scripts.map(s => s.type))
+
 // export const getAllTypes = () => getAllScript().then(scripts => scripts.reduce((p, {type}) => (!p.includes(type) && p.push(type), p), []))
 
 export const getScriptById = (id) => {

@@ -1,5 +1,5 @@
 import Vue from 'vue'
-// import { getAllTypes, updateAllTypes, addTypes } from './curd'
+import { getAllTypes } from './curd'
 
 export default new Vue({
   data() {
@@ -8,14 +8,14 @@ export default new Vue({
     }
   },
   created() {
-    getAllTypes().then(res => {
-      this.types = res || []
+    this.$on('updateTypes', (types) => {
+      this.types = types
     })
+    getAllTypes().then(res => this.types = res)
   },
   watch: {
     types(v) {
-      console.log('---- HACK ALL TYPES CHANGES  ----')
-      updateAllTypes(v)
+      console.log('---- global types changed ----')
     }
   }
 })
