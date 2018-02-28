@@ -1,11 +1,13 @@
 <template>
   <section class="container">
     <header class="view__header" v-if="mod==='view'">
-      {{config.name}}
+      <span class="view__header-type">{{config.type}}</span>
+      <span>
+        {{config.name}}
+      </span>
       <div class="view__header-right">
-        <span class="view__header-type">{{config.type}}</span>
-        <i class="el-icon-edit" @click="openEdit"></i>
-        <i class="el-icon-delete" @click="deletItem"></i>
+        <i class="edit-icon el-icon-edit" @click="openEdit"></i>
+        <i class="edit-icon el-icon-delete" @click="deletItem"></i>
       </div>
     </header>
     <header class="container__header" v-if="mod==='edit'">
@@ -49,6 +51,7 @@ export default {
   },
   data() {
     return {
+      isView: false,
       editingCode: {...this.config}
     }
   },
@@ -56,6 +59,8 @@ export default {
     isChanged() {
       const { config, editingCode } = this
       return !(config.code === editingCode.code && config.name === editingCode.name && config.type === editingCode.type)
+    },
+    shouldInView() {
     }
   },
   methods: {
@@ -108,8 +113,16 @@ export default {
   display: inline-block;
   color: #fff;
   background-color: #409eff;
-  padding: 6px;
+  padding: 4px 8px;
+  line-height: 1;
+  border-radius: 16px;
+  margin-right: 10px;
 }
 
+.edit-icon {
+  cursor: pointer;
+  margin-right: 10px;
+  font-size: 20px;
+}
 </style>
 

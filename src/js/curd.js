@@ -26,14 +26,24 @@ export const saveScript = payload => {
   })
 }
 
+export const getAllScript = () => {
+  return new Promise((resolve, reject) => {
+    storage.get(SCRIPT_KEY, res => {
+      if (chrome.runtime.error) return reject(chrome.runtime.error)
+      resolve(res[SCRIPT_KEY] || [])
+    })
+  })
+}
+
 export const updateScript = payload => {
   return new Promise((resolve, reject) => {
     if (!payload.id) return reject()
     storage.get(SCRIPT_KEY, res => {
       if (chrome.runtime.error) return reject(chrome.runtime.error)
       const allScript = res[SCRIPT_KEY] || []
-      const updateIndex = allScript.findIndex(payload.id)
-      if (~updateIndex) return reject('not found')
+      console.log(allScript)
+      const updateIndex = allScript.findIndex(i => i.id === payload.id)
+      if (!~updateIndex) return reject('not found')
       allScript[updateIndex] = {...allScript[updateIndex], ...payload}
       storage.set({...res, [SCRIPT_KEY]: allScript}, () => {
         if (chrome.runtime.error) return reject(chrome.runtime.error)
@@ -49,7 +59,7 @@ export const deleteScript = id => {
       if (chrome.runtime.error) return reject(chrome.runtime.error)
       const allScript = res[SCRIPT_KEY] || []
       const deleteIndex = allScript.findIndex(i => i.id === id)
-      if (~deleteIndex) return resolve()
+      if (!~deleteIndex) return resolve()
       allScript.splice(deleteIndex, 1)
       storage.set({...res, [SCRIPT_KEY]: allScript}, () => {
         if (chrome.runtime.error) return reject(chrome.runtime.error)
@@ -59,16 +69,7 @@ export const deleteScript = id => {
   })
 }
 
-export const getAllScript = () => {
-  return new Promise((resolve, reject) => {
-    storage.get(SCRIPT_KEY, res => {
-      if (chrome.runtime.error) return reject(chrome.runtime.error)
-      resolve(res[SCRIPT_KEY] || [])
-    })
-  })
-}
-
-export const getAllTypes = () => getAllScript().then(scripts => scripts.map(s => s.type))
+export const getAllTypes = () => getAllScript().then(scripts => scripts.map(s => s.type).reduce((p, c) => (!p.includes(c) && p.push(c), p), []))
 
 // export const getAllTypes = () => getAllScript().then(scripts => scripts.reduce((p, {type}) => (!p.includes(type) && p.push(type), p), []))
 

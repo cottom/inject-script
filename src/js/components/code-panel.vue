@@ -1,5 +1,7 @@
 <template>
-  <div class="container"><textarea ref="textarea"></textarea></div>
+  <div :class="`container ${disabled ? '' : 'min-height'}`">
+    <textarea ref="textarea" :value="value"></textarea>
+  </div>
 </template>
 <script>
 import CodeMirror from 'codemirror'
@@ -18,14 +20,14 @@ export default {
     return {}
   },
   mounted() {
-    const readyOnly = this.disabled ? true : false
+    const readOnly = this.disabled ? true : false
     this.editor = CodeMirror.fromTextArea(this.$refs.textarea, {
       viewportMargin: Infinity,
       lineNumbers: true,
       theme: 'icecoder',
       mode: 'javascript',
       value: this.value,
-      readyOnly
+      readOnly
     })
     this.editor.on('change', this.handleChange)
   },
@@ -39,7 +41,7 @@ export default {
       val !== this.editor.getValue() && this.editor.setValue(val)
     },
     disabled(v) {
-      this.editor.steOption('readyOnly', v)
+      this.editor.setOption('readOnly', v)
     }
   },
   methods: {
@@ -57,6 +59,8 @@ export default {
 .container .CodeMirror {
   border: 1px solid #eee;
   height: auto;
+}
+.min-height .CodeMirror  {
   min-height: 200px;
 }
 </style>
