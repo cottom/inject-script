@@ -1,4 +1,4 @@
-# Inject-Script
+# Inject-Scripts
 
 ## preview
 
