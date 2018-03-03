@@ -1,5 +1,10 @@
 # Inject-Script
 
+## preview
+
+![popup](./img/popup.jpeg)
+
+![option.jpeg](./img/option.jpeg)
 
 ## refer
 

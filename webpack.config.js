@@ -29,6 +29,7 @@ var options = {
     path: path.join(__dirname, "build"),
     filename: "[name].bundle.js"
   },
+  devtool: 'source-map',
   module: {
     // noParse: function(content) {
     //   return /vue|lodash/.test(content);
@@ -100,7 +101,7 @@ var options = {
 };
 
 if (env.NODE_ENV === "development") {
-  options.devtool = "cheap-module-eval-source-map";
+  options.devtool = "source-map";
 }
 
 module.exports = options;

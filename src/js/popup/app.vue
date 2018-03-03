@@ -1,10 +1,13 @@
 <template>
   <section class="container">
-    <img class="setting-menu" src="/setting.svg" @click="openEdit" />
+    <img class="setting-menu" src="../../img/setting.svg" @click="openEdit" />
     <div class="main-script">
+      <div class="no-more-conatiner" v-if="!showScripts || !showScripts.lengtj">
+        no more
+      </div>
       <div v-for="(item, index) in showScripts" :key="index" class="script-item">
         <span class="script-item__type">{{item.type}}</span>
-        <code-tooltip>
+        <code-tooltip :code="item.code">
           {{item.name}}
         </code-tooltip>
         <div class="script-item__action">
@@ -16,6 +19,9 @@
   </section>
 </template>
 <script>
+
+// https://stackoverflow.com/questions/9515704/insert-code-into-the-page-context-using-a-content-script
+
 import { getAllScript } from '../curd'
 import ext from '../util/ext'
 import CodeTooltip from '../components/code-tooltip.vue'
@@ -48,10 +54,12 @@ export default {
       })
     },
     inject(script) {
-
+      chrome.tabs.executeScript({
+        code: `(function() {${script.code}})()`
+      })
     },
     edit(script) {
-
+      ext.tabs.create({'url': ext.extension.getURL('options.html') + `#editingId=${script.id}`})
     }
   }
 }
@@ -62,12 +70,14 @@ export default {
   width: 400px;
   height: 400px;
   padding-top: 50px;
+  overflow-y: auto;
 }
 .script-item {
   position: relative;
   margin-bottom: 16px;
   border-bottom: solid #ddd 1px;
   padding-bottom: 10px;
+  font-size: 16px;
 }
 .script-item__action {
   position: absolute;
@@ -85,6 +95,11 @@ export default {
   cursor: pointer;
   color: #409eff;
   margin-right: 10px;
+}
+.no-more-conatiner {
+  color: #666;
+  font-size: 18px;
+  text-align: center;
 }
 </style>
 

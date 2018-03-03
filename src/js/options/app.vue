@@ -4,11 +4,11 @@
       Inject-Script
     </header>
     <article class="main-body">
-      <div class="filter" filterable>
-        <el-select placeholder="type filter" filterable v-model="filterType">
+      <div class="filter">
+        <el-select placeholder="type filter" filterable clearable v-model="filterType">
           <el-option v-for="(item, index) in $bus.types" :key="index" :value="item" :label="item"></el-option>
         </el-select>
-        <el-input type="script" placeholder="name" v-model="filterName" class="filter-input"></el-input>
+        <el-input type="script" placeholder="name" v-model="filterName" clearable class="filter-input"></el-input>
         <el-button @click="addNew" type="primary" v-if="!newScript" class="new-script-btn">add</el-button>
       </div>
       <div v-if="newScript" class="new-script__container">
@@ -47,8 +47,13 @@ export default {
   components: {
     EditorItem
   },
-  created() {
-    this.load()
+  async created() {
+    await this.load()
+    const hash = location.hash.replace('#', '')
+    if (!hash) return
+    const query = hash.split('&').filter(i => !!i).map(i => i.split('=')).reduce((p, c) => (p[c[0]] = c[1] || '', p), {})
+    console.log(query)
+    if (query.editingId) this.editingId = query.editingId
   },
   computed: {
     showScripts() {
@@ -62,7 +67,7 @@ export default {
   },
   methods: {
     load() {
-      getAllScript().then(res => {
+      return getAllScript().then(res => {
         this.scripts = res
         console.log(res)
       })
@@ -114,6 +119,7 @@ export default {
 <style>
 .filter {
   position: relative;
+  margin-bottom: 16px;
 }
 .new-script-btn {
   position: absolute;
