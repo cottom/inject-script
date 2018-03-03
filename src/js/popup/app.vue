@@ -2,7 +2,7 @@
   <section class="container">
     <img class="setting-menu" src="../../img/setting.svg" @click="openEdit" />
     <div class="main-script">
-      <div class="no-more-conatiner" v-if="!showScripts || !showScripts.lengtj">
+      <div class="no-more-conatiner" v-if="!showScripts || !showScripts.length">
         no more
       </div>
       <div v-for="(item, index) in showScripts" :key="index" class="script-item">
